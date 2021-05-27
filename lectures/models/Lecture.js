@@ -1,5 +1,9 @@
 const mongoose = require('mongoose');
 
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+
 
 const LectureSchema = new mongoose.Schema({
   name:{
@@ -13,7 +17,11 @@ const LectureSchema = new mongoose.Schema({
   doctor_id:{
     type: Number,
     required: true,
-   
+  },
+  lecture_qr_id:{
+    type: String,
+    required: true,
+    index: true
   },
   qr:{
     type: String,

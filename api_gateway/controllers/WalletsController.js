@@ -46,6 +46,7 @@ class WalletsController{
       res.status(err.response.status).json(err.response.data);
     }
   }
+
   withdraw = async (req, res) => {
     try {
       const response = await this.walletService.fetchData("withdraw", req.params, req.body)
@@ -58,6 +59,7 @@ class WalletsController{
       res.status(err.response.status).json(err.response.data);
     }
   }
+
   convertPoints = async (req, res) => {
     try {
       const response = await this.walletService.fetchData("convertPoints", req.params)
@@ -72,6 +74,21 @@ class WalletsController{
   }
 
   /////////////////////////////////////////////////transacion/////////////////////////////////////////////// 
+
+  storeGarageGateTransaction = async (req, res) => {
+    try {
+      const response = await this.walletService.fetchData("storeGarageGateTransaction", req.params, req.body)
+      if(response){
+        res.send(response.data);
+      } else {
+        res.sendStatus(404);
+      }
+    } catch(err){
+      res.status(err.response.status).json(err.response.data);
+    }
+  }
+
+
   store = async (req, res) => {
     try {
       const response = await this.walletService.fetchData("store", req.params, req.body)

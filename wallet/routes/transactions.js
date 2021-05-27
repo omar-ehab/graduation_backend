@@ -2,7 +2,7 @@ const router = require('express').Router();
 
 const controller = require('../controllers/TransactionsController');
 
-
+router.post('/:wallet_id/storeGarageGateTransaction', controller.storeGarageGateTransaction);
 router.post('/:wallet_id/storeTransaction', controller.store);
 router.get('/:id/showTransaction', controller.show);
 router.put('/:id/acceptTransaction',controller.accept);

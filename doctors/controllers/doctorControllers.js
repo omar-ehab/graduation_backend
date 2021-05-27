@@ -85,7 +85,6 @@ exports.update = async (req, res) => {
     });
 
     const validate = Joi.validate({ name: req.body.name, email: req.body.email, phone_number: req.body.phone_number }, schema);
-    console.log(validate);
     if (validate.error) {
         //bad request
         res.status(400).send(validate.error);
@@ -103,19 +102,19 @@ exports.update = async (req, res) => {
         email: req.body.email,
         phone_number: req.body.phone,
     }, { where: { id: req.params.id } }).then(doctor => {
-        res.json({ success: true });
+        res.json({ success: true, doctor });
     });
 };
 
 exports.delete = async (req, res) => {
-
-    const doctor = await db.Doctor.findOne({ where: { id: req.params.id } })
-    if (!doctor)
-        //doctor not found
-        return res.status(404).send("Doctor not found!");
     try {
-        await doctor.destroy();
-        return res.json({ success: true, message: 'user deleted' });
+        const doctor = await db.Doctor.findOne({ where: { id: req.params.id } })
+        if (!doctor){
+            return res.status(404).send("Doctor not found!");
+        } else {
+            await doctor.destroy();
+            return res.json({ success: true, message: 'user deleted' });
+        }
     }
     catch (err) {
         console.log(err);

@@ -9,6 +9,51 @@ const market = require('../ApiModels/market');
 const axios = require('axios');
 const { get_fcm } = require('../ApiModels/student');
 
+
+
+const storeGarageGateTransaction = async (req, res) => {
+    try {
+        const result = await depositWithdrawSchema.validateAsync(req.body);
+        const wallet = await Wallet.findOne({ where: { card_id: req.params.wallet_id } });
+        if(!wallet)
+            res.status(404).json({success: false, message: "Not Found!"});
+
+        if(wallet.checkBalance(result.amount)) {
+            
+            await Transaction.create({
+                wallet_id: wallet.card_id,
+                amount: result.amount,
+                initialized_at: new Date(),
+                accepted_at: new Date(),
+                type: "WITHDRAW",
+                other_id: result.other_id
+            });
+
+            res.json({ success:true, message: "student can enter" });    
+        } else {
+            res.json({
+                success: false,
+                message: "not enough balance"
+            });
+        }
+    } catch (error) {
+
+        if(error.isJoi){
+            res.status(422).json({
+                success: false,
+                error
+            });
+        }
+        if(error.response){
+            res.status(error.response.status).json(error.response.data);
+        } else {
+            res.status(500).send(error.message);
+        }
+
+        
+    }
+}
+
 const store = async (req, res) => {
     try {
         const result = await depositWithdrawSchema.validateAsync(req.body);
@@ -148,5 +193,6 @@ module.exports = {
     accept,
     reject,
     studentTransactions,
-    otherTransactions
+    otherTransactions,
+    storeGarageGateTransaction
 }

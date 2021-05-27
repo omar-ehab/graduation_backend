@@ -21,6 +21,7 @@ class WalletRoutes {
         this.router.put('/:card_id/convertPoints', this.controller.convertPoints); //post or put????
 
         //transaction 
+        this.router.post('/:wallet_id/storeGarageGateTransaction', this.controller.storeGarageGateTransaction);
         this.router.post('/:wallet_id/storeTransaction', this.controller.store);
         this.router.get('/:id/showTransaction', this.controller.show);
         this.router.put('/:id/acceptTransaction', this.controller.accept);

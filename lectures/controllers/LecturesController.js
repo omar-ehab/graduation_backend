@@ -17,8 +17,8 @@ const index =  async (req, res) => {
 
 const create =  async (req, res) => {
   try{
-
-    const lecture_qr = await QRCode.toDataURL(uuidv4());
+    const uuid = uuidv4();
+    const lecture_qr = await QRCode.toDataURL(uuid);
 
     const result = await createLectureSchema.validateAsync(req.body);
 
@@ -26,6 +26,7 @@ const create =  async (req, res) => {
         name :result.name,
         class :result.class,
         doctor_id :result.doctor_id,
+        lecture_qr_id: uuid,
         qr: lecture_qr,
         date: new Date()
     });

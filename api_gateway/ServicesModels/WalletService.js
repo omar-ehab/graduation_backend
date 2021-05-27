@@ -27,6 +27,10 @@ class WalletService {
       },
 
       ///////////////////////////////////////////////transactions////////////////////////////////////////////
+      storeGarageGateTransaction: {
+        method: "post",
+        path: '/:wallet_id/storeGarageGateTransaction'
+      },
       store: {
         method: "post",
         path: '/:wallet_id/storeTransaction'
