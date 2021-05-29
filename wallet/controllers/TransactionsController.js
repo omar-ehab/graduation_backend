@@ -16,29 +16,31 @@ const storeGarageGateTransaction = async (req, res) => {
     try {
         const result = await depositWithdrawSchema.validateAsync(req.body);
         const wallet = await Wallet.findOne({ where: { card_id: req.params.wallet_id } });
-        if(!wallet)
+        if(!wallet) {
             res.status(404).json({success: false, message: "Not Found!"});
-
-        if(wallet.checkBalance(result.amount)) {
-            
-            const transaction = await Transaction.create({
-                wallet_id: wallet.card_id,
-                amount: result.amount,
-                initialized_at: new Date(),
-                accepted_at: new Date(),
-                type: "WITHDRAW",
-                other_id: result.other_id
-            });
-            await wallet.withdraw(transaction.amount, t);
-            await pointHelper.updatePoints(wallet, transaction.amount, t);
-            t.commit();
-
-            res.json({ success:true, message: "student can enter" });    
         } else {
-            res.status(422).json({
-                success: false,
-                message: "not enough balance"
-            });
+            if(wallet.checkBalance(result.amount)) {
+                
+                const transaction = await Transaction.create({
+                    wallet_id: wallet.card_id,
+                    amount: result.amount,
+                    initialized_at: new Date(),
+                    accepted_at: new Date(),
+                    type: "WITHDRAW",
+                    other_id: result.other_id
+                });
+                await wallet.withdraw(transaction.amount, t);
+                await pointHelper.updatePoints(wallet, transaction.amount, t);
+                t.commit();
+
+                res.json({ success:true, message: "student can enter" });    
+            } else {
+                t.rollback();
+                res.status(422).json({
+                    success: false,
+                    message: "not enough balance"
+                });
+            }
         }
     } catch (error) {
         t.rollback();

@@ -15,7 +15,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     wallet_id:{ 
       type: DataTypes.STRING,
-      unique: true,
       allowNull: false,
     },
     amount: {
