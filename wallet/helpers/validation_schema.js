@@ -10,7 +10,7 @@ const checkBalanceSchema = Joi.object({
 
 const depositWithdrawSchema = Joi.object({
   amount: Joi.number().greater(0).required(),
-  other_id: Joi.number().greater(0).required()
+  other_id: Joi.number().greater(-1).required()
 });
 
 module.exports = {

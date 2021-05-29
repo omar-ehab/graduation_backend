@@ -12,6 +12,7 @@ const { get_fcm } = require('../ApiModels/student');
 
 
 const storeGarageGateTransaction = async (req, res) => {
+    const t = await db.sequelize.transaction();
     try {
         const result = await depositWithdrawSchema.validateAsync(req.body);
         const wallet = await Wallet.findOne({ where: { card_id: req.params.wallet_id } });
@@ -20,7 +21,7 @@ const storeGarageGateTransaction = async (req, res) => {
 
         if(wallet.checkBalance(result.amount)) {
             
-            await Transaction.create({
+            const transaction = await Transaction.create({
                 wallet_id: wallet.card_id,
                 amount: result.amount,
                 initialized_at: new Date(),
@@ -28,16 +29,20 @@ const storeGarageGateTransaction = async (req, res) => {
                 type: "WITHDRAW",
                 other_id: result.other_id
             });
+            await wallet.withdraw(transaction.amount, t);
+            await pointHelper.updatePoints(wallet, transaction.amount, t);
+            t.commit();
 
             res.json({ success:true, message: "student can enter" });    
         } else {
-            res.json({
+            res.status(422).json({
                 success: false,
                 message: "not enough balance"
             });
         }
     } catch (error) {
-
+        t.rollback();
+        console.log(error);
         if(error.isJoi){
             res.status(422).json({
                 success: false,
@@ -48,9 +53,7 @@ const storeGarageGateTransaction = async (req, res) => {
             res.status(error.response.status).json(error.response.data);
         } else {
             res.status(500).send(error.message);
-        }
-
-        
+        }  
     }
 }
 
