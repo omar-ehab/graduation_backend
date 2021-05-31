@@ -28,6 +28,7 @@ class WalletRoutes {
         this.router.put('/:id/rejectTransaction', this.controller.reject);
         this.router.get('/students/:student_id/Transaction', this.controller.studentTransactions);
         this.router.get('/other/:other_id/Transaction', this.controller.otherTransactions);
+        this.router.get('/other/:other_id/data', this.controller.getOtherIdData);
 
   
       return this.router;

@@ -1,5 +1,5 @@
 const express = require('express');
-// const { sequelize } = require('./models');
+const { sequelize } = require('./models');
 const staffRoute = require('./routes/staff')
 const axios = require('axios');
 require('dotenv').config();

@@ -166,6 +166,19 @@ class WalletsController{
     }
   }  
 
+  getOtherIdData = async (req, res) => {
+    try {
+      const response = await this.walletService.fetchData("getOtherIdData", req.params)
+      if(response){
+        res.send(response.data);
+      } else {
+        res.sendStatus(404);
+      }
+    } catch(err){
+      res.status(err.response.status).json(err.response.data);
+    }
+  }  
+
 }
 
 export default WalletsController;

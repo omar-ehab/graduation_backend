@@ -9,6 +9,7 @@ router.put('/:id/acceptTransaction',controller.accept);
 router.put('/:id/rejectTransaction', controller.reject);
 router.get('/students/:student_id/Transaction', controller.studentTransactions);
 router.get('/other/:other_id/Transaction', controller.otherTransactions);
+router.get('/other/:other_id/data', controller.getOtherIdData);
 
 
 

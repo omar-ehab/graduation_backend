@@ -55,6 +55,10 @@ class WalletService {
         method: "get",
         path: '/other/:other_id/Transaction'
       },
+      getOtherIdData: {
+        method: "get",
+        path: '/other/:other_id/data'
+      },
     };
   }
 
