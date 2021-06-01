@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 80;
 
 const app = express();
 
-const registerService = () => axios.put(`http://${process.env.API_GATEWAY_HOST}:${process.env.API_GATEWAY_PORT}/register/${process.env.SERVICE_NAME}/1.0.0/${PORT}`);
+const registerService = () => axios.put(`http://${process.env.API_GATEWAY_HOST}:${process.env.API_GATEWAY_PORT}/register/${process.env.NAME}/1.0.0/${PORT}`);
 
 
 app.use(helmet());
@@ -27,7 +27,7 @@ app.use(market_routes);
 app.use(async (req, res, next) => {
   res.status(404).json({
     success: false,
-    message: "not fount"
+    message: "not found"
   });
 });
 

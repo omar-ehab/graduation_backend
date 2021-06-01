@@ -210,21 +210,26 @@ const getOtherIdData = async (req, res) => {
          }
         });
         let other_data = {};
+        console.log(transaction.type);
         switch(transaction.type) {
+            case "DEPOSIT":
+                const response = await axios.get(`${process.env.API_GATEWAY_PROTOCOL}://${process.env.API_GATEWAY_HOST}:${process.env.API_GATEWAY_PORT}/staff/${req.params.other_id}`);
+                other_data.name = response.data.staff.name;
+                break;
             case "WITHDRAW":
                 if(transaction.other_id > 0) {
                     const response = await axios.get(`${process.env.API_GATEWAY_PROTOCOL}://${process.env.API_GATEWAY_HOST}:${process.env.API_GATEWAY_PORT}/markets/${req.params.other_id}`);
-                    other_data.name = response.data.name
+                    //console.log(response.data.market.name);
+                    other_data.name = response.data.market.name;
+                    
                 } else {
                     other_data.name = "Garage"
                 }
-            case "DEPOSIT":
-                const response = await axios.get(`${process.env.API_GATEWAY_PROTOCOL}://${process.env.API_GATEWAY_HOST}:${process.env.API_GATEWAY_PORT}/staff/${req.params.other_id}`);
-                other_data.name = response.data.name
+                break;
             default: 
                 other_data.name = "Unknown!"
         }
-        res.json({ success:true, transaction });
+        res.json({ success:true, transaction,other_data });
     } catch(err) {
         res.status(500).json({success: false, message: err.message});
     }

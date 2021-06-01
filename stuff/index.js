@@ -16,7 +16,7 @@ app.use(staffRoute);
 
 
 app.listen(PORT, async () => {
-    // await sequelize.sync({force: true});
+    //await sequelize.sync({force: true});
     registerService();
     setInterval(registerService, 25000);
     console.log(`server running at http://127.0.0.1:${PORT}`);
