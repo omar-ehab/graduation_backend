@@ -9,7 +9,7 @@ require('dotenv').config();
 const walletRoutes = require('./routes/wallet');
 const transactionsRoutes = require('./routes/transactions');
 
-const PORT = process.env.PORT || 80;
+const PORT = process.env.SERVICE_PORT || 80;
 
 const registerService = () => axios.put(`${process.env.API_GATEWAY_PROTOCOL}://${process.env.API_GATEWAY_HOST}:${process.env.API_GATEWAY_PORT}/register/${process.env.SERVICE_NAME}/1.0.0/${PORT}`);
 
@@ -44,7 +44,7 @@ app.use((err, req, res, next) => {
 
 
 app.listen(PORT, async () => {
-    // await sequelize.sync({force: true});
+   // await sequelize.sync({force: true});
     registerService();
     setInterval(registerService, 25000);
     console.log(`Server up on http://localhost:${PORT}`);
