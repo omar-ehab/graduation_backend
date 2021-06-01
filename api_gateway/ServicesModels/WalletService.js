@@ -27,6 +27,10 @@ class WalletService {
       },
 
       ///////////////////////////////////////////////transactions////////////////////////////////////////////
+      storeGarageGateTransaction: {
+        method: "post",
+        path: '/:wallet_id/storeGarageGateTransaction'
+      },
       store: {
         method: "post",
         path: '/:wallet_id/storeTransaction'
@@ -50,6 +54,10 @@ class WalletService {
       otherTransactions: {
         method: "get",
         path: '/other/:other_id/Transaction'
+      },
+      getOtherIdData: {
+        method: "get",
+        path: '/other/:other_id/data'
       },
     };
   }

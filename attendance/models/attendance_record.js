@@ -1,11 +1,16 @@
 const mongoose = require('mongoose');
 
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+
 
 const attendaceRecordSchema = new mongoose.Schema({
 
   lecture_id:{
     type: String,
     required: true,
+    index: true
   },
 
   student_id:{

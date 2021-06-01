@@ -21,12 +21,14 @@ class WalletRoutes {
         this.router.put('/:card_id/convertPoints', this.controller.convertPoints); //post or put????
 
         //transaction 
+        this.router.post('/:wallet_id/storeGarageGateTransaction', this.controller.storeGarageGateTransaction);
         this.router.post('/:wallet_id/storeTransaction', this.controller.store);
         this.router.get('/:id/showTransaction', this.controller.show);
         this.router.put('/:id/acceptTransaction', this.controller.accept);
         this.router.put('/:id/rejectTransaction', this.controller.reject);
         this.router.get('/students/:student_id/Transaction', this.controller.studentTransactions);
         this.router.get('/other/:other_id/Transaction', this.controller.otherTransactions);
+        this.router.get('/other/:other_id/data', this.controller.getOtherIdData);
 
   
       return this.router;

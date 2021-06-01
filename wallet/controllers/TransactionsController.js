@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const db = require("../models");
+const moment = require('moment');
 const Wallet = db.Wallet;
 const Transaction = db.Transaction;
 const pointHelper = require('../helpers/points_helper')
@@ -8,6 +9,56 @@ const { depositWithdrawSchema } = require('../helpers/validation_schema');
 const market = require('../ApiModels/market');
 const axios = require('axios');
 const { get_fcm } = require('../ApiModels/student');
+
+
+
+const storeGarageGateTransaction = async (req, res) => {
+    const t = await db.sequelize.transaction();
+    try {
+        const result = await depositWithdrawSchema.validateAsync(req.body);
+        const wallet = await Wallet.findOne({ where: { card_id: req.params.wallet_id } });
+        if(!wallet) {
+            res.status(404).json({success: false, message: "Not Found!"});
+        } else {
+            if(wallet.checkBalance(result.amount)) {
+                
+                const transaction = await Transaction.create({
+                    wallet_id: wallet.card_id,
+                    amount: result.amount,
+                    initialized_at: new Date(),
+                    accepted_at: new Date(),
+                    type: "WITHDRAW",
+                    other_id: result.other_id
+                });
+                await wallet.withdraw(transaction.amount, t);
+                await pointHelper.updatePoints(wallet, transaction.amount, t);
+                t.commit();
+
+                res.json({ success:true, message: "student can enter" });    
+            } else {
+                t.rollback();
+                res.status(422).json({
+                    success: false,
+                    message: "not enough balance"
+                });
+            }
+        }
+    } catch (error) {
+        t.rollback();
+        console.log(error);
+        if(error.isJoi){
+            res.status(422).json({
+                success: false,
+                error
+            });
+        }
+        if(error.response){
+            res.status(error.response.status).json(error.response.data);
+        } else {
+            res.status(500).send(error.message);
+        }  
+    }
+}
 
 const store = async (req, res) => {
     try {
@@ -121,7 +172,18 @@ const studentTransactions = async (req, res) => {
             },
             order: [['createdAt', 'DESC']]
         });
-        res.json({ success:true, transactions });
+        let transactions_response = transactions.map(transaction => {
+            return {
+                id: transaction.id,
+                wallet_id: transaction.wallet_id,
+                amount: transaction.amount,
+                initialized_at: moment(transaction.initialized_at).format('DD/MM/YYYY  h:mm:ss a'),
+                accepted_at: moment(transaction.accepted_at).format('DD/MM/YYYY  h:mm:ss a'),
+                type: transaction.type,
+                other_id: transaction.other_id
+            }
+        });
+        res.json({ success:true, transactions: transactions_response });
     } catch(err) {
         res.status(500).json({success: false, message: err.message});
     }
@@ -141,6 +203,33 @@ const otherTransactions = async (req, res) => {
     }
 }
 
+const getOtherIdData = async (req, res) => {
+    try {
+        const transaction = await Transaction.findOne({ where: {
+            other_id: req.params.other_id
+         }
+        });
+        let other_data = {};
+        switch(transaction.type) {
+            case "WITHDRAW":
+                if(transaction.other_id > 0) {
+                    const response = await axios.get(`${process.env.API_GATEWAY_PROTOCOL}://${process.env.API_GATEWAY_HOST}:${process.env.API_GATEWAY_PORT}/markets/${req.params.other_id}`);
+                    other_data.name = response.data.name
+                } else {
+                    other_data.name = "Garage"
+                }
+            case "DEPOSIT":
+                const response = await axios.get(`${process.env.API_GATEWAY_PROTOCOL}://${process.env.API_GATEWAY_HOST}:${process.env.API_GATEWAY_PORT}/staff/${req.params.other_id}`);
+                other_data.name = response.data.name
+            default: 
+                other_data.name = "Unknown!"
+        }
+        res.json({ success:true, transaction });
+    } catch(err) {
+        res.status(500).json({success: false, message: err.message});
+    }
+}
+
 
 module.exports = {
     store,
@@ -148,5 +237,7 @@ module.exports = {
     accept,
     reject,
     studentTransactions,
-    otherTransactions
+    otherTransactions,
+    storeGarageGateTransaction,
+    getOtherIdData
 }

@@ -1,7 +1,7 @@
 const express = require('express')
 require('dotenv').config();
 const axios = require('axios');
-//const { sequelize } = require('./models');
+const { sequelize } = require('./models');
 const studentRoutes = require('./routes/students');
 const app = express();
 const PORT = process.env.SERVICE_PORT || 80;
