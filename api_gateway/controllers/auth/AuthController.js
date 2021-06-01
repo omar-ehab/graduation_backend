@@ -32,7 +32,11 @@ class AuthController {
             const accessToken = await signAccessToken(userData.user.id.toString(), userData)
             const refreshToken = await signRefreshToken(userData.user.id.toString(), userData)
 
-            res.json({access_token: accessToken, refresh_token: refreshToken, type: "Bearer", expiresIn: process.env.ACCESS_TOKEN_LIFE})
+            delete userData.user.password
+            delete userData.user.createdAt
+            delete userData.user.updatedAt
+
+            res.json({access_token: accessToken, refresh_token: refreshToken, type: "Bearer", expiresIn: process.env.ACCESS_TOKEN_LIFE, user: userData.user})
           }
         }
          else {

@@ -34,7 +34,8 @@ class User {
           this.email = response.data.student.email;
           this.password = response.data.student.password;
           const user = response.data.student;
-          user.id = user.card_id;
+          user.id = user.id;
+          user.card_id = user.card_id;
           return {type: this.type, user}
         }
       } catch(err){

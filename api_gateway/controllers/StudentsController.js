@@ -41,6 +41,7 @@ class StudentsController{
     try {
       req.body.password = bcrypt.hashSync(req.body.password, 10);
       const response = await this.studentService.fetchData("store", {}, req.body);
+      console.log(response)
       if(response) {
         const walletResponse = await this.walletService.fetchData("create", {}, {
           card_id: response.data.student.card_id

@@ -37,7 +37,7 @@ class StudentService {
   
    async getUrl(pathName, params = {}) {
       try{
-        const { ip, port } = await this.serviceRegistry.get('students', '1');
+        const { ip, port } = await this.serviceRegistry.get('student', '1');
         const host = `http://${ip}:${port}`;
         const originalPath = this.pathes[pathName];
         return replacingPathParams(host, originalPath, params);
