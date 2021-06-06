@@ -21,6 +21,7 @@ class AuthController {
         const result = await authSchema.validateAsync(req.body);
         const user = new User(type, result.email, this.serviceRegistry);
         const userData = await user.init_user();
+
         if(userData) {
           const validated = await user.isValidPassword(result.password);
           if(validated) {
@@ -28,6 +29,7 @@ class AuthController {
             if(userData.type === 'student') {
               await this.studentService.fetchData("updateFcmCode", {email: result.email}, {fcm_code: req.body.fcm_code});
             }
+          
             
             const accessToken = await signAccessToken(userData.user.id.toString(), userData)
             const refreshToken = await signRefreshToken(userData.user.id.toString(), userData)
@@ -37,6 +39,8 @@ class AuthController {
             delete userData.user.updatedAt
 
             res.json({access_token: accessToken, refresh_token: refreshToken, type: "Bearer", expiresIn: process.env.ACCESS_TOKEN_LIFE, user: userData.user})
+          } else {
+            throw createError.Unauthorized('These credentials do not match our records.');
           }
         }
          else {

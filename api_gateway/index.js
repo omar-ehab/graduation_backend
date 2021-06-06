@@ -82,6 +82,7 @@ app.use(async (req, res, next) => {
 
 //other errors handler
 app.use((err, req, res, next) => {
+  console.log(err);
   res.status(err.status || 500)
   res.send({
       error: {

@@ -44,7 +44,7 @@ app.use((err, req, res, next) => {
 
 
 app.listen(PORT, async () => {
-   // await sequelize.sync({force: true});
+    // await sequelize.sync({force: true});
     registerService();
     setInterval(registerService, 25000);
     console.log(`Server up on http://localhost:${PORT}`);
