@@ -40,9 +40,12 @@ const store = async (req, res) => {
         error: err
       });
     }
-    return res.status(500).json({ error: process.env.NODE_ENV === 'development' ? err : "Something went wrong"});
+    return res.status(500).json({ error: process.env.NODE_ENV === 'development' ? 
+    err : "Something went wrong"});
   }
 }
+
+
 
 const show = async (req, res) => {
   const id = req.params.id;

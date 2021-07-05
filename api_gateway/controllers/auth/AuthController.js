@@ -29,10 +29,10 @@ class AuthController {
             if(userData.type === 'student') {
               await this.studentService.fetchData("updateFcmCode", {email: result.email}, {fcm_code: req.body.fcm_code});
             }
-          
-            
+
             const accessToken = await signAccessToken(userData.user.id.toString(), userData)
             const refreshToken = await signRefreshToken(userData.user.id.toString(), userData)
+
 
             delete userData.user.password
             delete userData.user.createdAt

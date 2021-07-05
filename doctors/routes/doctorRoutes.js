@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+
+
 const doctorControllers = require("../controllers/doctorControllers");
 
 // read all doctors

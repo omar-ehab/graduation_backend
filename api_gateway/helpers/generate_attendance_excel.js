@@ -17,7 +17,7 @@ const generate_attendance_excel = async (data) => {
     worksheet.addRow({
       student_id: record.student_id,
       student_name: record.student_name,
-      date: formatDate(new Date(record.date)),
+      date: record.date ? formatDate(new Date(record.date)) : "Absent",
     });
   });
 

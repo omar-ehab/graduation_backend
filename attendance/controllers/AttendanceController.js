@@ -32,6 +32,38 @@ const getRecordsByLectureId = async (req, res) => {
         })
       });
 
+      const absense_students = [
+        {
+          student_id: 'ABC-325678',
+          student_name: 'Yousry Ahmed Alaa',
+          date: null
+        },
+        {
+          student_id: 'ABC-388678',
+          student_name: 'Waleed Abdallah Mohamed',
+          date: null
+        },
+        {
+          student_id: 'ABC-543215',
+          student_name: 'Lamiaa Emad Aly',
+          date: null
+        },
+        {
+          student_id: 'ABC-984313',
+          student_name: 'Farah Yousry Mamdouh',
+          date: null
+        },
+        {
+          student_id: 'ABC-987432',
+          student_name: 'Mohamed Gamal Ahmad',
+          date: null
+        }
+      ];
+
+      for(i = 0; i < absense_students.length; i++) {
+        data.push(absense_students[i]);
+      }
+
       res.json({ success: true, records: data})
   } catch (error) {
     console.error(error);

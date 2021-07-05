@@ -1,8 +1,10 @@
 import { replacingPathParams } from '../helpers/url.js';
 import axios from 'axios';
+
 class StudentService {
   constructor(serviceRegistry) {
     this.serviceRegistry = serviceRegistry
+
       this.pathes = {
         index: {
           method: "get",

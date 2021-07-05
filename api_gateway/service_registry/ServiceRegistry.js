@@ -7,7 +7,7 @@ class ServiceRegistry {
     this.services = JSON.parse(localstorage.getItem('services'));
     this.timeout = 100000000; //in seconds
   }
-
+  
   async get(name, version) {
     await this.cleanup();
     this.services = JSON.parse(localstorage.getItem('services'));

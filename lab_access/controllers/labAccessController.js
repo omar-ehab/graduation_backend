@@ -23,7 +23,6 @@ const store_access = async (req, res) => {
     }
 }
 
-
 const get_distincet_labs = async (req, res, next) => {
     try{
         const data = await labAccess.aggregate('lab_name', 'DISTINCT', { plain: false});
@@ -59,8 +58,7 @@ const get_excel_data = async (req, res, next) => {
     } catch(error) {
         console.log(error)
         next(error)
-    }
-     
+    }   
 }
 
 const generate_condition_object = (lab_name, data) => {

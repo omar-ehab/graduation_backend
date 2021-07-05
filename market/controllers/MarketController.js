@@ -178,8 +178,6 @@ const withdraw = async (req, res, next) => {
     next(err);
   }
 }
-
-
 const deposit = async (req, res, next) => {
   const t = await sequelize.transaction();
   try {

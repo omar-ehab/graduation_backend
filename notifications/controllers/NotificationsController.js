@@ -35,6 +35,7 @@ const getNotificationTypes = async (req, res) => {
 
 
 //in app notification POST
+
 const createNotification = async (req, res) => {
     try {
         const { notification_type, student_id } = req.params;
@@ -58,9 +59,9 @@ const createNotification = async (req, res) => {
 }
 
 
-
-
 //sends push notification to user
+
+
 const notifyUser = async (req, res) => {
 
     const {notification_type, fcm_token} = req.params;
@@ -80,6 +81,8 @@ const notifyUser = async (req, res) => {
         }
     }
 }
+
+
 
 //sends notification to all users ONLY PROMO CODE NOTIFICATION !!!!!!
 const sendToAll = async (req, res) => {

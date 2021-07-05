@@ -152,6 +152,7 @@ const accept = async (req, res) => {
     }
 }
 
+
 const reject = async (req, res) => {
     try {
         await Transaction.destroy({ where: { id: req.params.id, accepted_at: null } });
@@ -162,6 +163,7 @@ const reject = async (req, res) => {
         res.status(500).json({success: false, message: err.message});
     }
 }
+
 
 const studentTransactions = async (req, res) => {
     try {

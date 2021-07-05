@@ -4,7 +4,7 @@ import StudentsController from '../controllers/StudentsController.js';
 
 
 
-class studnetsRoutes {
+class studnetsRoutes { 
     constructor(serviceRegistry) {
       this.router = express.Router();
       this.controller = new StudentsController(serviceRegistry);

@@ -1,4 +1,6 @@
 const router = require('express').Router();
+
+
 const StudentsController = require('../controllers/StudentsController');
 
 //SHOW ALL STUDENTS
@@ -13,7 +15,7 @@ router.get('/:email/read_by_email', StudentsController.readByEmail);
 router.put('/:id/update', StudentsController.update);
 //DELETE STUDENT
 router.delete('/:id/destroy', StudentsController.destroy);
-
+//UPDATE FCM_TOKEN
 router.put('/:email/update_fcm', StudentsController.updateFcm);
 
 module.exports = router;
